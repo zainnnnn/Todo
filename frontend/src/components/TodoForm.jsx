@@ -1,7 +1,8 @@
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 
-const TodoForm = () => {
+const TodoForm = (Props) => {
   const [newTodo, setNewTodo] = useState({
     body: "",
   });
@@ -11,7 +12,15 @@ const TodoForm = () => {
       ...prev,
       body: e.target.value,
     }));
-    console.log(newTodo);
+  };
+
+  const postTodo = () => {
+    Props.setTodos((prev) => [newTodo, ...prev]);
+    axios
+      .post("http://localhost:8000/api/todo/", newTodo)
+      .then((res) => [res.data, ...newTodo]);
+
+    setNewTodo({ body: "" });
   };
 
   return (
@@ -22,8 +31,15 @@ const TodoForm = () => {
         className="form-control"
         onChange={handleChange}
         value={newTodo.body}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            postTodo();
+          }
+        }}
       />
-      <button className="btn btn-primary ml-2">Add TODO</button>
+      <button className="btn btn-primary ml-2" onClick={postTodo}>
+        Add TODO
+      </button>
     </div>
   );
 };

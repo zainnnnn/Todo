@@ -9,6 +9,10 @@ const Table = (Props) => {
   const todos = Props.todos;
   const isLoading = Props.isLoading;
 
+  const handleDelete = (user) => {
+    
+  }
+
   return (
     <div className="py-2 ">
       <table className="w-11/12 max-w-4xl">

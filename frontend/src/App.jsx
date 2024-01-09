@@ -9,7 +9,7 @@ function App() {
   // const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchData = useEffect(() => {
     const controller = new AbortController();
     axios
       .get("http://localhost:8000/api/todo/", { signal: controller.signal })
@@ -24,12 +24,13 @@ function App() {
       });
     return () => controller.abort();
   }, []);
+
   return (
     <div className="bg-indigo-200 px-8 min-h-screen">
       <nav className="pt-8">
         <h1 className="text-5xl text-center pb-12">ToDo List</h1>
       </nav>
-      <TodoForm />
+      <TodoForm setTodos={setTodos} fetchData={fetchData} />
       <Table
         todos={todos}
         setTodos={setTodos}
