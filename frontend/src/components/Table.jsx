@@ -51,11 +51,17 @@ const Table = (Props) => {
                     <td className="p-3 text-sm">{todoItem.body}</td>
                     <td className="p-3 text-sm text-center">
                       {" "}
-                      <span className="p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300 ">
-                        Done
+                      <span
+                        className={`p-1.5 text-xs font-medium tracking-wider rounded-md ${
+                          todoItem.completed ? "bg-green-300" : " bg-red-300"
+                        }`}
+                      >
+                        {todoItem.completed ? "Done" : "Incomplete"}
                       </span>
                     </td>
-                    <td className="p-3 text-sm">22-04-23</td>
+                    <td className="p-3 text-sm">
+                      {new Date(todoItem.created).toLocaleString()}
+                    </td>
                     <td className="p-3 text-sm font-medium   items-center mt-5">
                       <span className="text-xl cursor-pointer">
                         <MdEditNote />
