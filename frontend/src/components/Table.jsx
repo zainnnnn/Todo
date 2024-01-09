@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   MdOutlineCheckBoxOutlineBlank,
   MdOutlineDeleteOutline,
@@ -9,9 +10,10 @@ const Table = (Props) => {
   const todos = Props.todos;
   const isLoading = Props.isLoading;
 
-  const handleDelete = (user) => {
-    
-  }
+  const handleDelete = (id) => {
+    Props.setTodos(Props.todos.filter((u) => u.id !== id));
+    axios.delete(`http://localhost:8000/api/todo/${id}/`);
+  };
 
   return (
     <div className="py-2 ">
@@ -71,7 +73,9 @@ const Table = (Props) => {
                         <MdEditNote />
                       </span>
                       <span className="text-xl cursor-pointer">
-                        <MdOutlineDeleteOutline />
+                        <MdOutlineDeleteOutline
+                          onClick={() => handleDelete(todoItem.id)}
+                        />
                       </span>
                     </td>
                   </tr>
