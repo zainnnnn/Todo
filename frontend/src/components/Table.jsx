@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import {
   MdOutlineCheckBoxOutlineBlank,
   MdOutlineDeleteOutline,
@@ -13,6 +14,27 @@ const Table = (Props) => {
   const handleDelete = (id) => {
     Props.setTodos(Props.todos.filter((u) => u.id !== id));
     axios.delete(`http://localhost:8000/api/todo/${id}/`);
+  };
+
+  const handleEdit = async (id, value) => {
+    try {
+      const response = await axios.patch(
+        `http://localhost:8000/api/todo/${id}/`,
+        value
+      );
+      const newTodos = todos.map((todo) =>
+        todo.id === id ? response.data : todo
+      );
+      Props.setTodos(newTodos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCheckbox = (id, value) => {
+    handleEdit(id, {
+      completed: !value,
+    });
   };
 
   return (
@@ -46,7 +68,12 @@ const Table = (Props) => {
                 return (
                   <tr key={todoItem.id} className="border-b border-black ">
                     <td className="p-3 text-sm" title={todoItem.id}>
-                      <span className="inline-block cursor-pointer">
+                      <span
+                        onClick={() =>
+                          handleCheckbox(todoItem.id, todoItem.completed)
+                        }
+                        className="inline-block cursor-pointer"
+                      >
                         {todoItem.completed ? (
                           <MdOutlineCheckBox />
                         ) : (
@@ -88,9 +115,5 @@ const Table = (Props) => {
     </div>
   );
 };
-
-// Table.propTypes = {
-//   todos: PropTypes.array.isRequired,
-// };
 
 export default Table;
